@@ -1,10 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-'''
-Created on 2012-2-12
-
-@author: guxin
-'''
 
 from handler.ReqHandler import ReqHandler
 from utils import common

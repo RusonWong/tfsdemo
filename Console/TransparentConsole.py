@@ -13,18 +13,28 @@ while True:
     cmd = raw_input("transparent>")
     #print cmd
     cmd = cmd.split(" ")
+    cmd = [item for item in cmd if item != "" and item != " "]
     #print cmd
     op = cmd[0]
     if op == "create":
-        fileName = cmd[1]
-        size = cmd[2]
-        transparentService.create(fileName, size)
+        if len(cmd) < 3:
+            print "usage: create [filename] [size]\n"
+        else:
+            fileName = cmd[1]
+            size = cmd[2]
+            transparentService.create(fileName, size)
     elif op == "delete":
-        fileName = cmd[1]
-        transparentService.delete(fileName)
+        if len(cmd) < 2:
+            print "usage: delete [filename]\n"
+        else:
+            fileName = cmd[1]
+            transparentService.delete(fileName)
     elif op == "clean":
-        fileName = cmd[1]
-        transparentService.delete(fileName)
+        if len(cmd) < 2:
+            print "usage: clean [filename]\n"
+        else:
+            fileName = cmd[1]
+            transparentService.clean(fileName)
     elif op == "ls":
         transparentService.ls();
     elif op == "quit":

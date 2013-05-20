@@ -60,3 +60,5 @@ class Block(object):
             self.__state = self.States["Allocated_and_Overwritten"]
         elif op == "delete_transparent":
             self.__state = self.States["Free"]
+        elif op == "clean_transparent":
+            self.__state = self.States["Free"]

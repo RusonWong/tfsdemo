@@ -1,13 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-""" BesTV """
-
-__version__ = "@version: Revision: 0.1"
-__author__ = "@author: gu.xin@bestv.com.cn"
-__copyright__ = "@copyright: Copyright BesTV 2012 $. All rights reserved"
-
-
-
 import sys
 from threading import Thread
 import copy

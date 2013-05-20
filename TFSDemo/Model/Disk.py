@@ -12,7 +12,6 @@ class Disk(object):
     classdocs
     '''
 
-
     def __init__(self):
         '''
         Constructor
@@ -73,6 +72,7 @@ class Disk(object):
         
         newFile = File();
         newFile.fileName = fileName
+        newFile.fileSize = size
         sizeleft = size;
         for i in range(self.__block_count):
             block = self.__blocks[i]
@@ -91,6 +91,8 @@ class Disk(object):
     
     #transparent operations
     def deleteTransparentFile(self,fileName):
+        if not self.__isTFileDeleteAble(fileName):
+            return False
         fileToDelete = None;
         files = [f for f in self.__TFiles if f.fileName==fileName]
         if len(files) > 0:
@@ -99,7 +101,7 @@ class Disk(object):
                 blockidx = fileToDelete.blocks[idx]
                 self.__blocks[blockidx].processOperation("delete_transparent")
             '''todo delete file from file array'''
-            for i in range(len(self.__LFiles)):
+            for i in range(len(self.__TFiles)):
                 if self.__TFiles[i].fileName == fileName:
                     del self.__TFiles[i]
                     break
@@ -107,6 +109,8 @@ class Disk(object):
         return False
     
     def cleanTransparentFile(self,fileName):
+        if not self.__isTFileCleanAble(fileName):
+            return False
         fileToDelete = None;
         files = [f for f in self.__TFiles if f.fileName==fileName]
         if len(files) > 0:
@@ -130,6 +134,7 @@ class Disk(object):
         
         newFile = File();
         newFile.fileName = fileName
+        newFile.fileSize = size
         sizeleft = size;
         for i in range(self.__block_count):
             block = self.__blocks[i]
@@ -152,4 +157,37 @@ class Disk(object):
     def lsTransparentFiles(self):
         files = [f.fileName for f in self.__TFiles]
         return files
+    
+    '''
+    check file deleteable, just to check if it is transparent(all blocks transparent)
+    '''
+    def __isTFileDeleteAble(self,fileName):
+        '''find file'''
+        files = [f for f in self.__TFiles if f.fileName==fileName]
+        if len(files) <= 0:
+            return False;
         
+        fileToCheck = files[0]
+        for idx in range(len(fileToCheck.blocks)):
+            blockidx = fileToCheck.blocks[idx]
+            if self.__blocks[blockidx].getState() != Block.States['Transparent']:
+                print "find some block not transparent...undeleteable..."
+                return False
+        return True
+    
+    '''
+    isFileCleanable: check file clean able, just to check if it is(partly) overwritten 
+    '''
+    def __isTFileCleanAble(self,fileName):
+        files = [f for f in self.__TFiles if f.fileName==fileName]
+        if len(files) <= 0:
+            return False;
+        
+        fileToCheck = files[0]
+        for idx in range(len(fileToCheck.blocks)):
+            blockidx = fileToCheck.blocks[idx]
+            if (self.__blocks[blockidx].getState() == Block.States['Free_and_Overwritten']\
+                     or self.__blocks[blockidx].getState() == Block.States['Allocated_and_Overwritten']):
+                print "find some block overwritten... cleanable"
+                return True
+        return False
