@@ -37,9 +37,9 @@ class TransparentService(object):
         content = htmlGraber.doGrab(url)
         print content
         
-    def clean(self,fileName):
+    def open(self,fileName):
         htmlGraber = HtmlGraber()
-        url = self.urlbase + "/clean?filename="+fileName
+        url = self.urlbase + "/open?filename="+fileName
         #print url
         content = htmlGraber.doGrab(url)
         print content

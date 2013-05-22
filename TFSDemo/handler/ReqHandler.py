@@ -90,10 +90,10 @@ class ReqHandler(object):
             rslt = self.__tfs_model.deleteTransparentFile(fileName)
             if rslt == True:
                 msg = "ok"
-        if request['method'] == "clean":
+        if request['method'] == "open":
             fileName = request['filename'][0]
-            print "file to clean:",fileName
-            rslt = self.__tfs_model.cleanTransparentFile(fileName)
+            print "file to open:",fileName
+            rslt = self.__tfs_model.openTransparentFile(fileName)
             if rslt == True:
                 msg = "ok"
         if request['method'] == "ls":

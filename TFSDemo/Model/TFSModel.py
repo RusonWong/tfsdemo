@@ -44,6 +44,9 @@ class TFSModel(object):
     def createTransparentFile(self,fileName,size):
         return self.__Disk.createTransparentFile(fileName, size)
     
+    def openTransparentFile(self,fileName):
+        return self.__Disk.openTransparentFile(fileName)
+    
     def lsLocalFiles(self):
         return json.dumps(self.__Disk.lsLocalFiles())
     

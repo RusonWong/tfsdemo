@@ -91,8 +91,12 @@ class Disk(object):
     
     #transparent operations
     def deleteTransparentFile(self,fileName):
-        if not self.__isTFileDeleteAble(fileName):
+        if not self.__isTFileExist(fileName):
             return False
+        
+        if self.__isTFileExistandDirty(fileName):
+            return self.cleanTransparentFile(fileName)
+        
         fileToDelete = None;
         files = [f for f in self.__TFiles if f.fileName==fileName]
         if len(files) > 0:
@@ -108,8 +112,14 @@ class Disk(object):
             return True
         return False
     
+    def openTransparentFile(self,fileName):
+        if self.__isTFileExistandDirty(fileName):
+            self.cleanTransparentFile(fileName)
+            return False
+        return True
+    
     def cleanTransparentFile(self,fileName):
-        if not self.__isTFileCleanAble(fileName):
+        if not self.__isTFileExistandDirty(fileName):
             return False
         fileToDelete = None;
         files = [f for f in self.__TFiles if f.fileName==fileName]
@@ -161,24 +171,17 @@ class Disk(object):
     '''
     check file deleteable, just to check if it is transparent(all blocks transparent)
     '''
-    def __isTFileDeleteAble(self,fileName):
+    def __isTFileExist(self,fileName):
         '''find file'''
         files = [f for f in self.__TFiles if f.fileName==fileName]
         if len(files) <= 0:
             return False;
-        
-        fileToCheck = files[0]
-        for idx in range(len(fileToCheck.blocks)):
-            blockidx = fileToCheck.blocks[idx]
-            if self.__blocks[blockidx].getState() != Block.States['Transparent']:
-                print "find some block not transparent...undeleteable..."
-                return False
         return True
     
     '''
     isFileCleanable: check file clean able, just to check if it is(partly) overwritten 
     '''
-    def __isTFileCleanAble(self,fileName):
+    def __isTFileExistandDirty(self,fileName):
         files = [f for f in self.__TFiles if f.fileName==fileName]
         if len(files) <= 0:
             return False;

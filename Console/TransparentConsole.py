@@ -29,12 +29,12 @@ while True:
         else:
             fileName = cmd[1]
             transparentService.delete(fileName)
-    elif op == "clean":
+    elif op == "open":
         if len(cmd) < 2:
-            print "usage: clean [filename]\n"
+            print "usage: open [filename]\n"
         else:
             fileName = cmd[1]
-            transparentService.clean(fileName)
+            transparentService.open(fileName)
     elif op == "ls":
         transparentService.ls();
     elif op == "quit":
