@@ -146,10 +146,10 @@ class Disk(object):
         newFile.fileName = fileName
         newFile.fileSize = size
         sizeleft = size;
-        for i in range(self.__block_count):
-            block = self.__blocks[i]
+        for i in range(self.__block_count - self.__hot_space_count):
+            block = self.__blocks[i + self.__hot_space_count]
             if block.getState() == Block.States["Free"]:
-                newFile.blocks.append(i)
+                newFile.blocks.append(i + self.__hot_space_count)
                 sizeleft = sizeleft - Block.BlockSize;
                 if sizeleft <= 0:
                     break
